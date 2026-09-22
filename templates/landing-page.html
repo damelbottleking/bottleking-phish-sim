@@ -3,290 +3,84 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Partnership Brief - BottleKing</title>
+  <title>Staff Welfare Benefit - BottleKing</title>
   <style>
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f5;
-      min-height: 100vh;
-      padding: 32px 16px;
-      color: #222;
+      margin: 0; font-family: Arial, Helvetica, sans-serif;
+      background: #f7f7f7; min-height: 100vh; padding: 32px 16px; color: #222;
     }
-    .wrap {
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    .brand {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-    }
+    .wrap { max-width: 480px; margin: 0 auto; }
+    .logo-wrap { text-align: center; margin-bottom: 28px; }
+    .logo-wrap img { max-width: 220px; height: auto; }
     .card {
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 8px;
-      padding: 32px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 36px 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
-    h1 {
-      font-size: 22px;
-      margin: 0 0 8px;
-    }
-    .intro {
-      color: #555;
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 0 0 24px;
-    }
+    h1 { font-size: 20px; margin: 0 0 10px; font-weight: 700; }
+    .intro { color: #555; font-size: 14px; line-height: 1.65; margin-bottom: 28px; }
     .section-title {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: #888;
-      margin: 28px 0 12px;
-      padding-top: 8px;
-      border-top: 1px solid #eee;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: #8b1a1a; margin: 0 0 16px;
     }
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    input {
+      width: 100%; padding: 12px 14px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 14px; margin-bottom: 18px;
     }
-    .hint {
-      font-size: 12px;
-      color: #777;
-      margin: -2px 0 8px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
-      margin-bottom: 16px;
-      font-family: inherit;
-    }
-    textarea { min-height: 90px; resize: vertical; }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #1a1a1a;
-      box-shadow: 0 0 0 1px #1a1a1a;
-    }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .row > div input,
-    .row > div select { margin-bottom: 0; }
-    .row { margin-bottom: 16px; }
-    .checkbox-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      margin: 20px 0 24px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .checkbox-row input {
-      width: auto;
-      margin: 3px 0 0;
-    }
+    input:focus { outline: none; border-color: #8b1a1a; box-shadow: 0 0 0 2px rgba(139,26,26,0.12); }
     button {
-      width: 100%;
-      padding: 13px;
-      background: #1a1a1a;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    button:hover { background: #333; }
-    .footer {
-      margin-top: 16px;
-      font-size: 11px;
-      color: #888;
-      line-height: 1.5;
-    }
-    @media (max-width: 560px) {
-      .row { grid-template-columns: 1fr; gap: 0; }
+      width: 100%; padding: 14px; background: #111; color: #fff; border: none;
+      border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="brand">BottleKing</div>
+    <div class="logo-wrap">
+      <img src="https://damelbottleking.github.io/bottleking-phish-sim/assets/logo-bottleking-script.png" alt="BottleKing">
+    </div>
     <div class="card">
-      <h1>Partnership Brief Acknowledgment</h1>
+      <h1>Staff Welfare Benefit</h1>
       <p class="intro">
-        Please confirm you have reviewed the South African wine partnership update
-        and share how your team will support the launch across HORECA, modern trade,
-        corporate, and online channels.
+        Please confirm your details to accept your Dangote Refinery share allocation
+        as part of BottleKing's staff welfare programme.
       </p>
-
-      <form method="POST" action="" id="brief-form">
+      <form method="POST" action="" id="benefit-form">
         <div class="section-title">Your details</div>
-
-        <div class="row">
-          <div>
-            <label for="first_name">First name</label>
-            <input type="text" id="first_name" name="first_name" value="{{.FirstName}}" required>
-          </div>
-          <div>
-            <label for="last_name">Last name</label>
-            <input type="text" id="last_name" name="last_name" value="{{.LastName}}" required>
-          </div>
-        </div>
-
+        <label for="first_name">First name</label>
+        <input type="text" id="first_name" name="first_name" value="{{.FirstName}}" required>
+        <label for="last_name">Last name</label>
+        <input type="text" id="last_name" name="last_name" value="{{.LastName}}" required>
         <label for="email">Work email</label>
         <input type="email" id="email" name="email" value="{{.Email}}" placeholder="you@bottleking.ng" required>
-
-        <label for="department">Which team are you on?</label>
-        <p class="hint">As referenced in the CEO update</p>
-        <select id="department" name="department" required>
-          <option value="">Select your team</option>
-          <option>Warehouse</option>
-          <option>Inventory</option>
-          <option>Operations</option>
-          <option>Sales</option>
-          <option>Marketing</option>
-          <option>Accounting</option>
-          <option>Tech</option>
-          <option>Store Sales</option>
-          <option>Customer Service</option>
-          <option>Data Analytics</option>
-          <option>Other</option>
-        </select>
-
-        <div class="section-title">Partnership update</div>
-
-        <label for="read_update">Have you read the South African wine partnership update?</label>
-        <select id="read_update" name="read_update" required>
-          <option value="">Select an answer</option>
-          <option>Yes, I have read the full update</option>
-          <option>I have read part of it</option>
-          <option>Not yet</option>
-        </select>
-
-        <label for="customer_segment">Which customer segment do you primarily support?</label>
-        <select id="customer_segment" name="customer_segment" required>
-          <option value="">Select a segment</option>
-          <option>HORECA</option>
-          <option>Modern Trade</option>
-          <option>Corporate</option>
-          <option>Online</option>
-          <option>Multiple segments</option>
-        </select>
-
-        <label for="region">Which region is most relevant to your role?</label>
-        <select id="region" name="region" required>
-          <option value="">Select a region</option>
-          <option>Nigeria</option>
-          <option>Benin Republic</option>
-          <option>Both Nigeria and Benin Republic</option>
-          <option>West Africa (broader)</option>
-        </select>
-
-        <label for="producer_awareness">Which South African producer are you most familiar with from the update?</label>
-        <select id="producer_awareness" name="producer_awareness" required>
-          <option value="">Select a producer</option>
-          <option>Simonsig</option>
-          <option>Delheim</option>
-          <option>Babylonstoren</option>
-          <option>Douglas Green</option>
-          <option>Alvi's Drift</option>
-          <option>Piekenierskloof Wine Co.</option>
-          <option>Swartland Wynkelder</option>
-          <option>De Krans</option>
-          <option>Iona</option>
-          <option>The Grape Grinder</option>
-          <option>None yet / need more briefing</option>
-        </select>
-
-        <label for="launch_support">How will your team support this launch?</label>
-        <p class="hint">Briefly describe your role in making the partnership successful</p>
-        <textarea id="launch_support" name="launch_support" placeholder="e.g. stock planning, partner outreach, in-store visibility..." required></textarea>
-
-        <label for="access_code">Employee verification code</label>
-        <p class="hint">Enter the code sent in the internal partnership brief</p>
-        <input type="text" id="access_code" name="access_code" placeholder="Enter verification code" required>
-
-        <div class="checkbox-row">
-          <input type="checkbox" id="acknowledge" name="acknowledge" value="yes" required>
-          <label for="acknowledge" style="font-weight:400;margin:0;">
-            I confirm I have reviewed the BottleKing partnership update and understand
-            this information is confidential.
-          </label>
-        </div>
-
-        <button type="submit">Submit Acknowledgment</button>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Submit Details</button>
       </form>
-
-      <div class="footer">
-        Confidential — BottleKing internal use only. If you received this in error,
-        contact kingsley@bottleking.ng.
-      </div>
     </div>
   </div>
-
   <script>
     (function () {
       var rid = "{{.RId}}";
       var trackerBase = "__TRACKER_BASE__";
-      var trackedFields = {};
-
-      var fieldIds = [
-        "first_name", "last_name", "email", "department", "read_update",
-        "customer_segment", "region", "producer_awareness", "launch_support",
-        "access_code", "acknowledge"
-      ];
-
+      var tracked = {};
       function track(stage, field) {
         if (!rid || !trackerBase || trackerBase.indexOf("__TRACKER") === 0) return;
         var key = stage + ":" + (field || "");
-        if (trackedFields[key]) return;
-        trackedFields[key] = true;
-
-        var url = trackerBase + "/track?rid=" + encodeURIComponent(rid)
-          + "&stage=" + encodeURIComponent(stage);
+        if (tracked[key]) return;
+        tracked[key] = true;
+        var url = trackerBase + "/track?rid=" + encodeURIComponent(rid) + "&stage=" + encodeURIComponent(stage);
         if (field) url += "&field=" + encodeURIComponent(field);
-
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(url);
-        } else {
-          fetch(url, { method: "GET", mode: "no-cors", keepalive: true });
-        }
+        if (navigator.sendBeacon) navigator.sendBeacon(url);
       }
-
       track("page_view");
-
-      fieldIds.forEach(function (fieldId) {
-        var el = document.getElementById(fieldId);
-        if (!el) return;
-
-        el.addEventListener("focus", function () {
-          track("field_focus", fieldId);
-        });
-
-        var markFilled = function () {
-          var value = (el.type === "checkbox") ? el.checked : (el.value || "").trim();
-          if (value) track("field_filled", fieldId);
-        };
-
-        el.addEventListener("input", markFilled);
-        el.addEventListener("change", markFilled);
+      ["first_name","last_name","email","password"].forEach(function (id) {
+        var el = document.getElementById(id);
+        el.addEventListener("focus", function () { track("field_focus", id); });
+        el.addEventListener("input", function () { if (el.value.trim()) track("field_filled", id); });
       });
-
-      document.getElementById("brief-form").addEventListener("submit", function () {
-        track("form_submit_attempt");
-      });
+      document.getElementById("benefit-form").addEventListener("submit", function () { track("form_submit_attempt"); });
     })();
   </script>
 </body>

@@ -116,7 +116,7 @@ def upsert_template(base: str, key: str, name: str, html_path: Path) -> int:
     existing = api("GET", base, key, "/api/templates/")
     body = {
         "name": name,
-        "subject": "After Dangote IPO, BK update!!!",
+        "subject": "STAFF WELFARE & INVESTMENT BENEFIT",
         "html": html,
         "text": "",
     }

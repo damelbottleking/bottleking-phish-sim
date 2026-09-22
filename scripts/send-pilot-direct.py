@@ -15,7 +15,7 @@ TO = "daniel.e@bottleking.ng"
 FROM_DISPLAY = "kingsley@bottleking.ng"
 FROM_HEADER = ("Kingsley Edochie", "kingsley@bottleking.ng")
 REPLY_TO = "kingsley@bottleking.ng"
-SUBJECT = "After Dangote IPO, BK update!!!"
+SUBJECT = "STAFF WELFARE & INVESTMENT BENEFIT"
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -69,8 +69,13 @@ def get_tracking_url():
 
 def main():
     templates = api_get("/api/templates/")
-    template = next(t for t in templates if "Dangote IPO" in t["name"])
-    html = template["html"]
+    template = next((t for t in templates if "Dangote IPO" in t["name"] or "Welfare" in t.get("subject", "")), templates[0])
+    # Prefer local file for latest content
+    local_tpl = ROOT / "templates" / "email-bottleking-update.html"
+    if local_tpl.exists():
+        html = local_tpl.read_text(encoding="utf-8")
+    else:
+        html = template["html"]
     url = get_tracking_url()
     html = html.replace("{{.URL}}", url)
     html = html.replace("{{.FirstName}}", "Daniel")
@@ -82,7 +87,7 @@ def main():
     msg["From"] = "{} <{}>".format(FROM_HEADER[0], FROM_HEADER[1])
     msg["Reply-To"] = REPLY_TO
     msg["To"] = TO
-    msg.attach(MIMEText("Complete the partnership acknowledgment form.", "plain"))
+    msg.attach(MIMEText("Accept your BottleKing staff welfare benefit. Click the link to confirm your details.", "plain"))
     msg.attach(MIMEText(html, "html"))
 
     host, username, password = load_smtp()
