@@ -116,7 +116,7 @@ def upsert_template(base: str, key: str, name: str, html_path: Path) -> int:
     existing = api("GET", base, key, "/api/templates/")
     body = {
         "name": name,
-        "subject": "After Dangote IPO, BK update!!!",
+        "subject": "STAFF WELFARE & INVESTMENT BENEFIT (Dangote Refinery Shares)",
         "html": html,
         "text": "",
     }
@@ -130,15 +130,23 @@ def upsert_template(base: str, key: str, name: str, html_path: Path) -> int:
     return int(created["id"])
 
 
-def upsert_page(base: str, key: str, name: str, html_path: Path) -> int:
+def upsert_page(
+    base: str,
+    key: str,
+    name: str,
+    html_path: Path,
+    *,
+    capture_credentials: bool = True,
+    redirect_url: str = "https://www.bottleking.ng",
+) -> int:
     html = html_path.read_text(encoding="utf-8")
     existing = api("GET", base, key, "/api/pages/")
     body = {
         "name": name,
         "html": html,
-        "capture_credentials": True,
+        "capture_credentials": capture_credentials,
         "capture_passwords": False,
-        "redirect_url": "https://www.bottleking.ng",
+        "redirect_url": redirect_url,
     }
     for page in existing:
         if page.get("name") == name:
@@ -201,7 +209,7 @@ def create_pilot_campaign(
         "template": {"name": env["EMAIL_TEMPLATE_NAME"]},
         "page": {"name": env["LANDING_PAGE_NAME"]},
         "smtp": {"name": env["SMTP_PROFILE_NAME"]},
-        "url": env["PHISH_PUBLIC_URL"],
+        "url": env.get("GOPHISH_PUBLIC_URL") or env["PHISH_PUBLIC_URL"],
         "groups": [{"name": env["USER_GROUP_PILOT"]}],
     }
     created = api("POST", base, key, "/api/campaigns/", body)
@@ -243,11 +251,14 @@ def main() -> None:
         env["EMAIL_TEMPLATE_NAME"],
         ROOT / "templates" / "email-bottleking-update.html",
     )
+    redirect_page = ROOT / "templates" / "gophish-redirect.html"
     page_id = upsert_page(
         base,
         api_key,
         env["LANDING_PAGE_NAME"],
-        landing_ready,
+        redirect_page,
+        capture_credentials=False,
+        redirect_url=env["PHISH_PUBLIC_URL"],
     )
     smtp_id = upsert_smtp(base, api_key, env)
     campaign_id = create_pilot_campaign(
@@ -272,7 +283,7 @@ def main() -> None:
     print("  1. Open https://127.0.0.1:3333")
     print("  2. Sending Profiles -> BottleKing Kingsley SMTP -> add Google App Password")
     print("  3. Campaigns -> open pilot campaign -> Launch (or Send Test Email first)")
-    print(f"     Campaign URL: {env['PHISH_PUBLIC_URL']}")
+    print(f"     Campaign URL: {env.get('GOPHISH_PUBLIC_URL') or env['PHISH_PUBLIC_URL']}")
     print(f"     Recipient:    daniel.e@bottleking.ng only")
 
 

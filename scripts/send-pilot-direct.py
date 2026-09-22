@@ -12,10 +12,10 @@ from pathlib import Path
 
 BASE = "https://127.0.0.1:3333"
 TO = "daniel.e@bottleking.ng"
-FROM_DISPLAY = "kingsley@bottleking.ng"
+FROM_DISPLAY = "Kingsley Edochie <kingsley@bottleking.ng>"
 FROM_HEADER = ("Kingsley Edochie", "kingsley@bottleking.ng")
 REPLY_TO = "kingsley@bottleking.ng"
-SUBJECT = "After Dangote IPO, BK update!!!"
+SUBJECT = "STAFF WELFARE & INVESTMENT BENEFIT (Dangote Refinery Shares)"
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,9 +23,14 @@ ROOT = Path(__file__).resolve().parents[1]
 def campaign_url():
     env_path = ROOT / ".env"
     if env_path.exists():
+        gophish_url = ""
+        phish_url = ""
         for line in env_path.read_text().splitlines():
-            if line.startswith("PHISH_PUBLIC_URL="):
-                return line.split("=", 1)[1].strip()
+            if line.startswith("GOPHISH_PUBLIC_URL="):
+                gophish_url = line.split("=", 1)[1].strip()
+            elif line.startswith("PHISH_PUBLIC_URL="):
+                phish_url = line.split("=", 1)[1].strip()
+        return gophish_url or phish_url or "http://127.0.0.1:8090"
     return "http://127.0.0.1:8090"
 
 
@@ -48,9 +53,24 @@ def api_get(path):
 
 def load_smtp():
     conn = sqlite3.connect(ROOT / "gophish-bin" / "gophish.db")
-    row = conn.execute("SELECT host, username, password FROM smtp WHERE id=2").fetchone()
+    row = conn.execute(
+        "SELECT host, username, password, from_address FROM smtp WHERE id=2"
+    ).fetchone()
     conn.close()
-    return row[0], row[1], row[2]
+    if not row or not row[2]:
+        raise SystemExit(
+            "No App Password in GoPhish profile id=2.\n"
+            "Open https://127.0.0.1:3333 -> Sending Profiles -> "
+            "BottleKing IT Send (From Kingsley) -> paste Google App Password."
+        )
+    username = (row[1] or "").strip()
+    if "@" not in username or " " in username:
+        raise SystemExit(
+            "Invalid SMTP username {!r}. Use plain email only, e.g. daniel.e@bottleking.ng".format(
+                username
+            )
+        )
+    return row[0], username, row[2]
 
 
 def get_tracking_url():
@@ -92,13 +112,30 @@ def main():
 
     host, username, password = load_smtp()
     host_name, port = host.split(":")
-    with smtplib.SMTP(host_name, int(port), timeout=30) as server:
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(username, password)
-        # Envelope must match authenticated account unless Workspace "Send mail as" is enabled.
-        server.sendmail(username, [TO], msg.as_string())
+    print("SMTP login as: {}".format(username))
+    print("Sending to: {} (plain address, no display name)".format(TO))
+    try:
+        with smtplib.SMTP(host_name, int(port), timeout=30) as server:
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login(username, password)
+            # Envelope must match authenticated account unless Workspace "Send mail as" is enabled.
+            server.sendmail(username, [TO], msg.as_string())
+    except smtplib.SMTPAuthenticationError:
+        raise SystemExit(
+            "535 BadCredentials: App Password does not match username {}.\n"
+            "In GoPhish Sending Profiles, set Username to daniel.e@bottleking.ng and "
+            "paste a fresh 16-character Google App Password for that account.".format(
+                username
+            )
+        ) from None
+    except smtplib.SMTPRecipientsRefused as exc:
+        raise SystemExit(
+            "Recipient rejected: {}.\n"
+            "Use plain daniel.e@bottleking.ng only — not "
+            '"Daniel Ekundayo" <daniel.e@bottleking.ng> (Gmail 555 error).'.format(exc)
+        ) from None
 
     print("Pilot email sent to {}".format(TO))
     print("Tracking link: {}".format(url))

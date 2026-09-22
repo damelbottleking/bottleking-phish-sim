@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PID_DIR="$ROOT/.run"
+mkdir -p "$PID_DIR"
+CF="${CLOUDFLARED_BIN:-/opt/homebrew/bin/cloudflared}"
+
+if [[ ! -x "$CF" ]]; then
+  CF="$(command -v cloudflared || true)"
+fi
+if [[ -z "$CF" ]]; then
+  echo "Install cloudflared: brew install cloudflared" >&2
+  exit 1
+fi
+
+stop_one() {
+  local name="$1"
+  local pidfile="$PID_DIR/${name}.pid"
+  if [[ -f "$pidfile" ]]; then
+    kill "$(cat "$pidfile")" 2>/dev/null || true
+    rm -f "$pidfile"
+  fi
+}
+
+start_one() {
+  local name="$1"
+  local port="$2"
+  local log="$PID_DIR/${name}.log"
+  stop_one "$name"
+  nohup "$CF" tunnel --protocol http2 --url "http://127.0.0.1:${port}" >"$log" 2>&1 &
+  echo $! >"$PID_DIR/${name}.pid"
+  local url=""
+  for _ in $(seq 1 30); do
+    url="$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' "$log" | head -1 || true)"
+    if [[ -n "$url" ]]; then
+      echo "$url"
+      return 0
+    fi
+    sleep 1
+  done
+  echo "Failed: see $log" >&2
+  return 1
+}
+
+GOPHISH_URL="$(start_one cf-gophish 8090)"
+TRACKER_URL="$(start_one cf-tracker 9090)"
+
+python3 - <<PY
+import json, re
+from pathlib import Path
+root = Path("${ROOT}")
+cfg = {"gophish_url": "${GOPHISH_URL}", "tracker_url": "${TRACKER_URL}"}
+(root / "docs/config.json").write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
+env_path = root / ".env"
+if env_path.exists():
+    text = env_path.read_text(encoding="utf-8")
+    for key, val in [("GOPHISH_PUBLIC_URL", cfg["gophish_url"]), ("TRACKER_PUBLIC_URL", cfg["tracker_url"])]:
+        line = f"{key}={val}"
+        if re.search(rf"^{re.escape(key)}=", text, flags=re.M):
+            text = re.sub(rf"^{re.escape(key)}=.*$", line, text, flags=re.M)
+        else:
+            text = text.rstrip() + "\n" + line + "\n"
+    env_path.write_text(text, encoding="utf-8")
+print("gophish_url:", cfg["gophish_url"])
+print("tracker_url:", cfg["tracker_url"])
+print("Updated docs/config.json and .env")
+print("Keep cloudflared running. Then: git add docs/config.json && git commit -m 'Tracking URLs' && git push")
+PY

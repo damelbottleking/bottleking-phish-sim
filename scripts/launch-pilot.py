@@ -99,6 +99,8 @@ def main() -> None:
     send_name = campaign_name
     if campaign:
         results = api("GET", base, key, f"/api/campaigns/{campaign['id']}/results")
+        if isinstance(results, dict):
+            results = results.get("results", [])
         failed = any(r.get("status") == "Error" for r in results)
         sent = any(r.get("status") in {"Email Sent", "Clicked Link", "Submitted Data"} for r in results)
         if sent:
