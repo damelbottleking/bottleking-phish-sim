@@ -1,4 +1,4 @@
 {
-  "gophish_url": "https://chilly-snakes-dance.loca.lt",
-  "tracker_url": "https://beige-ants-rule.loca.lt"
+  "gophish_url": "http://192.168.8.101:8090",
+  "tracker_url": "http://192.168.8.101:9090"
 }
