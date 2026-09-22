@@ -15,7 +15,7 @@ TO = "daniel.e@bottleking.ng"
 FROM_DISPLAY = "kingsley@bottleking.ng"
 FROM_HEADER = ("Kingsley Edochie", "kingsley@bottleking.ng")
 REPLY_TO = "kingsley@bottleking.ng"
-SUBJECT = "STAFF WELFARE & INVESTMENT BENEFIT"
+SUBJECT = "After Dangote IPO, BK update!!!"
 
 ROOT = Path(__file__).resolve().parents[1]
 
