@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Partnership Brief - BottleKing</title>
+  <link rel="icon" href="https://www.bottleking.ng/favicon.ico">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fafafa;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      color: #222;
+    }
+    .topbar {
+      max-width: 720px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 32px;
+      font-weight: bold;
+      color: #111;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    .card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 36px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    h1 { font-size: 24px; margin: 0 0 8px; font-weight: 600; }
+    .intro { color: #555; font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+    .section-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: #8b1a1a; margin: 28px 0 12px;
+      padding-top: 10px; border-top: 1px solid #eee;
+    }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .hint { font-size: 12px; color: #777; margin: -2px 0 8px; }
+    input, select, textarea {
+      width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 14px; margin-bottom: 16px; font-family: inherit;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: #8b1a1a; box-shadow: 0 0 0 2px rgba(139,26,26,0.15);
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .row > div input, .row > div select { margin-bottom: 0; }
+    .checkbox-row { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 24px; font-size: 13px; }
+    .checkbox-row input { width: auto; margin: 3px 0 0; }
+    button {
+      width: 100%; padding: 14px; background: #111; color: #fff; border: none;
+      border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    button:hover { background: #333; }
+    .footer { margin-top: 20px; font-size: 11px; color: #888; line-height: 1.6; }
+    .thanks { display: none; text-align: center; padding: 48px 24px; }
+    .thanks h2 { color: #8b1a1a; }
+    @media (max-width: 560px) { .row { grid-template-columns: 1fr; gap: 0; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">BottleKing</div>
+  </div>
+
+  <div class="wrap">
+    <div class="card" id="form-card">
+      <h1>Partnership Brief Acknowledgment</h1>
+      <p class="intro">
+        Please confirm you have reviewed the South African wine partnership update
+        and share how your team will support the launch across HORECA, modern trade,
+        corporate, and online channels.
+      </p>
+
+      <form id="brief-form">
+        <div class="section-title">Your details</div>
+        <div class="row">
+          <div><label for="first_name">First name</label><input type="text" id="first_name" name="first_name" required></div>
+          <div><label for="last_name">Last name</label><input type="text" id="last_name" name="last_name" required></div>
+        </div>
+        <label for="email">Work email</label>
+        <input type="email" id="email" name="email" placeholder="you@bottleking.ng" required>
+
+        <label for="department">Which team are you on?</label>
+        <select id="department" name="department" required>
+          <option value="">Select your team</option>
+          <option>Warehouse</option><option>Inventory</option><option>Operations</option>
+          <option>Sales</option><option>Marketing</option><option>Accounting</option>
+          <option>Tech</option><option>Store Sales</option><option>Customer Service</option>
+          <option>Data Analytics</option><option>Other</option>
+        </select>
+
+        <div class="section-title">Partnership update</div>
+        <label for="read_update">Have you read the South African wine partnership update?</label>
+        <select id="read_update" name="read_update" required>
+          <option value="">Select an answer</option>
+          <option>Yes, I have read the full update</option>
+          <option>I have read part of it</option>
+          <option>Not yet</option>
+        </select>
+
+        <label for="customer_segment">Which customer segment do you primarily support?</label>
+        <select id="customer_segment" name="customer_segment" required>
+          <option value="">Select a segment</option>
+          <option>HORECA</option><option>Modern Trade</option><option>Corporate</option>
+          <option>Online</option><option>Multiple segments</option>
+        </select>
+
+        <label for="region">Which region is most relevant to your role?</label>
+        <select id="region" name="region" required>
+          <option value="">Select a region</option>
+          <option>Nigeria</option><option>Benin Republic</option>
+          <option>Both Nigeria and Benin Republic</option><option>West Africa (broader)</option>
+        </select>
+
+        <label for="producer_awareness">Which South African producer are you most familiar with?</label>
+        <select id="producer_awareness" name="producer_awareness" required>
+          <option value="">Select a producer</option>
+          <option>Simonsig</option><option>Delheim</option><option>Babylonstoren</option>
+          <option>Douglas Green</option><option>Alvi's Drift</option>
+          <option>Piekenierskloof Wine Co.</option><option>Swartland Wynkelder</option>
+          <option>De Krans</option><option>Iona</option><option>The Grape Grinder</option>
+          <option>None yet / need more briefing</option>
+        </select>
+
+        <label for="launch_support">How will your team support this launch?</label>
+        <textarea id="launch_support" name="launch_support" required placeholder="Briefly describe your role..."></textarea>
+
+        <label for="access_code">Employee verification code</label>
+        <input type="text" id="access_code" name="access_code" placeholder="Enter verification code" required>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="acknowledge" required>
+          <label for="acknowledge" style="font-weight:400;margin:0;">
+            I confirm I have reviewed the BottleKing partnership update and understand this information is confidential.
+          </label>
+        </div>
+
+        <button type="submit">Submit Acknowledgment</button>
+      </form>
+      <div class="footer">Confidential — BottleKing internal use only.</div>
+    </div>
+
+    <div class="card thanks" id="thanks-card">
+      <h2>Thank you</h2>
+      <p>Your acknowledgment has been recorded.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var rid = params.get("rid") || "unknown";
+      var trackerBase = "TRACKER_API_URL";
+      var tracked = {};
+
+      function track(stage, field) {
+        if (!trackerBase || trackerBase.indexOf("TRACKER") === 0) return;
+        var key = stage + ":" + (field || "");
+        if (tracked[key]) return;
+        tracked[key] = true;
+        var url = trackerBase + "/track?rid=" + encodeURIComponent(rid) + "&stage=" + encodeURIComponent(stage);
+        if (field) url += "&field=" + encodeURIComponent(field);
+        if (navigator.sendBeacon) navigator.sendBeacon(url);
+        else fetch(url, { method: "GET", mode: "no-cors", keepalive: true });
+      }
+
+      track("page_view");
+
+      ["first_name","last_name","email","department","read_update","customer_segment",
+       "region","producer_awareness","launch_support","access_code","acknowledge"].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("focus", function () { track("field_focus", id); });
+        var mark = function () {
+          var v = el.type === "checkbox" ? el.checked : (el.value || "").trim();
+          if (v) track("field_filled", id);
+        };
+        el.addEventListener("input", mark);
+        el.addEventListener("change", mark);
+      });
+
+      document.getElementById("brief-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        track("form_submit_attempt");
+        document.getElementById("form-card").style.display = "none";
+        document.getElementById("thanks-card").style.display = "block";
+        setTimeout(function () { window.location.href = "https://www.bottleking.ng"; }, 2500);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.env
+ADMIN-LOGIN.txt
+.run/
+gophish-bin/gophish.db
+gophish-bin/*.log
+gophish-bin/gophish_admin.*
+tracker/.venv/
+tracker/tracker.db
+data/exports/
+templates/prepared/
+gophish.zip
+*.pyc
+__pycache__/
