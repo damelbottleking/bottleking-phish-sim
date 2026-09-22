@@ -72,6 +72,7 @@ def read_admin_api_key() -> str:
 
 
 def main() -> None:
+    force = "--force" in sys.argv
     env = load_env()
     base = env["GOPHISH_API_URL"]
     key = env.get("GOPHISH_API_KEY") or read_admin_api_key()
@@ -103,9 +104,10 @@ def main() -> None:
             results = results.get("results", [])
         failed = any(r.get("status") == "Error" for r in results)
         sent = any(r.get("status") in {"Email Sent", "Clicked Link", "Submitted Data"} for r in results)
-        if sent:
+        if sent and not force:
             print(f"Campaign already sent successfully to {pilot_email}")
             print(f"Campaign id: {campaign['id']} status: {campaign.get('status')}")
+            print("Run with --force to send a new tracked campaign (e.g. after tunnel URL change).")
             return
         if failed or campaign.get("status") in {"In progress", "Completed"}:
             send_name = f"{campaign_name} - Retry {datetime.now().strftime('%H%M')}"
@@ -128,7 +130,8 @@ def main() -> None:
     print(f"  Status:   {status}")
     print(f"  To:       {pilot_email}")
     print(f"  From:     {env['SMTP_FROM_NAME']} <{env['SMTP_FROM_EMAIL']}>")
-    print(f"  Link URL: {env['PHISH_PUBLIC_URL']}")
+    print(f"  Campaign URL: {env.get('GOPHISH_PUBLIC_URL') or env['PHISH_PUBLIC_URL']}")
+    print(f"  Form URL:     {env['PHISH_PUBLIC_URL']}")
 
 
 if __name__ == "__main__":
