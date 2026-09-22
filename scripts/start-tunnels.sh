@@ -46,14 +46,28 @@ TRACKER_URL="$(start_tunnel tracker-tunnel 9090)"
 
 python3 - <<PY
 import json
+import re
 from pathlib import Path
+
+root = Path("${ROOT}")
 cfg = {
     "gophish_url": "${GOPHISH_URL}",
     "tracker_url": "${TRACKER_URL}",
 }
-path = Path("${ROOT}/docs/config.json")
-path.write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
-print("Updated docs/config.json")
+(root / "docs/config.json").write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
+
+env_path = root / ".env"
+if env_path.exists():
+    text = env_path.read_text(encoding="utf-8")
+    for key, val in [("GOPHISH_PUBLIC_URL", cfg["gophish_url"]), ("TRACKER_PUBLIC_URL", cfg["tracker_url"])]:
+        line = f"{key}={val}"
+        if re.search(rf"^{re.escape(key)}=", text, flags=re.M):
+            text = re.sub(rf"^{re.escape(key)}=.*$", line, text, flags=re.M)
+        else:
+            text = text.rstrip() + "\n" + line + "\n"
+    env_path.write_text(text, encoding="utf-8")
+
+print("Updated docs/config.json and .env")
 print("  gophish_url:", cfg["gophish_url"])
 print("  tracker_url:", cfg["tracker_url"])
 PY

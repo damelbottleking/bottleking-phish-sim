@@ -93,8 +93,8 @@ def main() -> None:
         raise SystemExit("Pilot group not found.")
 
     targets = pilot_group.get("targets", [])
-    if len(targets) != 1 or targets[0].get("email") != pilot_email:
-        raise SystemExit(f"Pilot group must contain only {pilot_email}")
+    if not targets:
+        raise SystemExit(f"Pilot group {env['USER_GROUP_PILOT']} has no targets.")
 
     send_name = campaign_name
     if campaign:
@@ -113,7 +113,7 @@ def main() -> None:
         "template": {"name": env["EMAIL_TEMPLATE_NAME"]},
         "page": {"name": env["LANDING_PAGE_NAME"]},
         "smtp": {"name": env["SMTP_PROFILE_NAME"]},
-        "url": env["PHISH_PUBLIC_URL"],
+        "url": env.get("GOPHISH_PUBLIC_URL") or env["PHISH_PUBLIC_URL"],
         "groups": [{"name": env["USER_GROUP_PILOT"]}],
         "launch_date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
     }
